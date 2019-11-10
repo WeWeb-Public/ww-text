@@ -1980,6 +1980,9 @@ export default {
 }
 
 .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
@@ -2046,6 +2049,7 @@ h4 {
             position: absolute;
             top: -2px;
             left: -2px;
+            -webkit-transform: translateY(-100%);
             transform: translateY(-100%);
             padding: 2px;
             background-color: #2e86c2;

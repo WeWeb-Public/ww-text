@@ -52,7 +52,11 @@ export default {
 
 <style scoped lang="scss">
 .ww-text-popup-html {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
 
     .editor {
