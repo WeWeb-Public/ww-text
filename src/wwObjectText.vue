@@ -95,7 +95,7 @@ export default {
                             },
                             vn
                         );
-                    } else if (node.nodeName.toLowerCase() == 'ww-link') {
+                    } else if (node.nodeName.toLowerCase() === 'ww-link') {
                         let vn = createVNodes(node.childNodes);
 
                         const valueObject = JSON.parse(node.attributes['data-ww-link'].nodeValue);
@@ -139,7 +139,7 @@ export default {
                             },
                             vn
                         );
-                    } else if (node.nodeName.toLowerCase() == 'script') {
+                    } else if (node.nodeName.toLowerCase() === 'script') {
                         continue;
                     } else {
                         let vn = createVNodes(node.childNodes);
@@ -152,7 +152,7 @@ export default {
                             }
                         }
 
-                        const nodeName = node.nodeName.toLowerCase() == 'p' ? 'div' : node.nodeName.toLowerCase();
+                        const nodeName = node.nodeName.toLowerCase() === 'p' ? 'div' : node.nodeName.toLowerCase();
 
                         vNode = createVNode(
                             nodeName,
@@ -230,7 +230,7 @@ export default {
         wwObjectCtrl: Object,
         wwAttrs: {
             type: Object,
-            default: {}
+            default: () => ({})
         }
     },
     data() {
@@ -250,10 +250,10 @@ export default {
             return this.wwObjectCtrl.get();
         },
         editing() {
-            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() == 'CONTENT' && this.focus;
+            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() === 'CONTENT' && this.focus;
         },
         editingSection() {
-            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() == 'CONTENT';
+            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() === 'CONTENT';
         }
         // text() {
         //     console.log('CHANGED LANG');
@@ -270,7 +270,7 @@ export default {
     },
     watch: {
         /* wwManager:start */
-        async editingSection(a, oldEditingSection) {
+        async editingSection() {
             if (this.editingSection && !this.oldEditingSection) {
                 //this.correctText();
 
@@ -408,8 +408,6 @@ export default {
             elem.append(elemP);
             elemP.innerHTML = text;
 
-            let self = this;
-
             function getFontSize(el) {
                 let size = el.style.fontSize;
                 if (size) {
@@ -534,13 +532,10 @@ export default {
             if (!Quill.imports['formats/ww-object-embed']) {
                 const Parchment = Quill.import('parchment');
                 const Embed = Quill.import('blots/embed');
-                const Block = Quill.import('blots/block');
                 const TextBlot = Quill.import('blots/text');
                 const Break = Quill.import('blots/break');
                 const Cursor = Quill.import('blots/cursor');
                 const Inline = Quill.import('blots/inline');
-                const Container = Quill.import('blots/container');
-                const Scroll = Quill.import('blots/scroll');
 
                 // WWOBJECT
                 function createWwObject(self, wwObjectIndex) {
@@ -567,7 +562,7 @@ export default {
                     }
 
                     for (let c of self.$children) {
-                        if (c.c_wwObject && c.c_wwObject.uniqueId == wwObjectData.uniqueId) {
+                        if (c.c_wwObject && c.c_wwObject.uniqueId === wwObjectData.uniqueId) {
                             c.$destroy();
                         }
                     }
@@ -661,7 +656,7 @@ export default {
                     }
 
                     format(name, value) {
-                        if (name == 'color' && value) {
+                        if (name === 'color' && value) {
                             this.domNode.querySelector('.line').style.borderTopColor = value;
                             let _value = JSON.parse(this.domNode.getAttribute('data-line') || '{}');
                             _value.color = value;
@@ -736,9 +731,9 @@ export default {
                 var ListItem = Quill.import('formats/list/item');
                 class ListItemStyle extends ListItem {
                     format(name, value) {
-                        if (name == 'li-font') {
+                        if (name === 'li-font') {
                             this.domNode.style.fontFamily = value;
-                        } else if (name == 'li-size') {
+                        } else if (name === 'li-size') {
                             for (let c of this.domNode.classList) {
                                 if (c.indexOf('ww-font-size-') === 0) {
                                     this.domNode.classList.remove(c);
@@ -1145,19 +1140,14 @@ export default {
             switch (this.wwObject.content.data.tag) {
                 case 'h1':
                     return 'ww-text-hover-h1';
-                    break;
                 case 'h2':
                     return 'ww-text-hover-h2';
-                    break;
                 case 'h3':
                     return 'ww-text-hover-h3';
-                    break;
                 case 'h4':
                     return 'ww-text-hover-h4';
-                    break;
                 default:
                     return '';
-                    break;
             }
         },
 
@@ -1250,7 +1240,7 @@ export default {
 
             switch (cmd) {
                 case 'color':
-                    if (value == 'more') {
+                    if (value === 'more') {
                         let options = {
                             firstPage: 'COLOR_PICKER'
                         };
@@ -1276,7 +1266,7 @@ export default {
         setList(value) {
             let currentFormat = this.quill.getFormat()['list'];
 
-            if (currentFormat == value) {
+            if (currentFormat === value) {
                 this.exec('list', null);
             } else {
                 this.exec('list', value);
@@ -1292,7 +1282,7 @@ export default {
                 newValue = parseInt(currentFormat.replace('px', ''));
             }
 
-            if (direction == 'left') {
+            if (direction === 'left') {
                 newValue += 50;
             } else {
                 newValue -= 50;
@@ -1326,7 +1316,7 @@ export default {
 
         setFontWeight(value) {
             this.checkSelection();
-            if (parseInt(value) == 700) {
+            if (parseInt(value) === 700) {
                 this.quill.format('fontWeight', null);
                 this.quill.format('bold', true);
             } else {
@@ -1653,7 +1643,7 @@ export default {
             };
 
             try {
-                const result = await wwLib.wwPopups.open(options);
+                await wwLib.wwPopups.open(options);
                 wwLib.wwObjectEditors.close(this.textBar);
                 wwLib.wwObjectEditors.add(this.textBar);
             } catch (error) {
@@ -1677,7 +1667,6 @@ export default {
                     fr: 'Editer le HTML'
                 },
                 type: 'wwTextPopupHtml',
-                buttons: null,
                 storyData: {},
                 buttons: {
                     NEXT: {
@@ -1756,7 +1745,7 @@ export default {
 
         setFocus(focusId) {
             const oldFocus = this.focus;
-            this.focus = focusId == this.$parent._uid;
+            this.focus = focusId === this.$parent._uid;
 
             if (this.focus) {
                 this.d_edited = true;
