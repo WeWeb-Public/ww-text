@@ -43,11 +43,30 @@
 					},
 					"icon": "fas fa-code",
 					"action": "editHTML"
+				},
+				{
+					"name": "CONNECT",
+					"text": {
+						"en": "Connect to CMS",
+						"fr": "Connecter à un CMS"
+					},
+					"icon": "",
+					"action": "connectCms"
 				}
 			]
 		},
 		"wwObjectHover": {
 			"hoverClass": "getHoverTag"
-		}
+		},
+		"bindableProps": [
+			{
+				"displayName": {
+					"en": "Text",
+					"fr": "Texte"
+				},
+				"localizable": true,
+				"attributeName": "text"
+			}
+		]
 	}
 }

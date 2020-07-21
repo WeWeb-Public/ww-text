@@ -1355,6 +1355,10 @@ export default {
             this.clearRender = true;
             this.quill = null;
             this.$forceUpdate();
+        },
+
+        async connectCms() {
+            this.wwObjectCtrl.globalEdit({ connect: true });
         }
 
         /* wwManager:end */
