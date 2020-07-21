@@ -15,15 +15,7 @@ wwLib.wwPopups.addStory('WWTEXT_LINKS', {
     },
     type: 'wwPopupLinks',
     storyData: {
-        links: [
-            'EXTERNAL',
-            'INTERNAL',
-            'SECTION',
-            // 'POPUP',
-            'DOWNLOAD',
-            'CLOSE_POPUP'
-            // 'NO_LINK'
-        ]
+        links: ['EXTERNAL', 'INTERNAL', 'SECTION', 'DOWNLOAD', 'CLOSE_POPUP']
     }
 });
 /* wwManager:end */
@@ -255,18 +247,6 @@ export default {
         editingSection() {
             return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() === 'CONTENT';
         }
-        // text() {
-        //     console.log('CHANGED LANG');
-        //     // <span class="ww-object-embed" data-ww-object-id="0"></span>
-        //     // [[wwObject=0]]
-
-        //     let text = wwLib.wwLang.getText(this.wwObject.content.data.text);
-        //     const wwObjRegex = /\[\[wwObject=([^\]]*)\]\]/gi;
-
-        //     text = text.replace(wwObjRegex, '<span class="ww-object-embed" data-ww-object-id="$1"></span>');
-
-        //     return text;
-        // }
     },
     watch: {
         /* wwManager:start */
@@ -288,10 +268,6 @@ export default {
             this.$el.addEventListener('mousedown', this.preventNextClick);
             this.$el.addEventListener('click', wwLib.wwObjectMenu.close);
 
-            // await wwLib.wwUtils.addScriptToHead({
-            //     link: 'https://cdn.quilljs.com/1.3.6/quill.js'
-            // });
-
             await this.loadQuillModules();
 
             if (this.editingSection) {
@@ -303,40 +279,6 @@ export default {
             }
             /* wwManager:end */
         },
-
-        /*
-        isTextEmpty() {
-            return this.text.trim() == "";
-        },
-        */
-        /*
-        getType(text) {
-            if (text && text.indexOf("wwObject=") == 0) {
-                return 'wwObject';
-            }
-            return 'wwSimpleText';
-        },
-        */
-        /*
-        isWwObject(text) {
-            return text.indexOf("wwObject=") == 0;
-        },
-        */
-        /*
-        getWwObject(text) {
-            let index = text.replace('wwObject=', '');
-            try {
-                index = parseInt(index);
-            }
-            catch (e) {
-                return text;
-            }
-            if (this.wwObject.content.data && this.wwObject.content.data.children && this.wwObject.content.data.children[index]) {
-                return this.wwObject.content.data.children[index];
-            }
-            return text;
-        },
-        */
 
         /* wwManager:start */
 
@@ -394,9 +336,7 @@ export default {
 
             corrected && this.wwObjectCtrl.update(this.wwObject);
 
-            // this.$nextTick(() => {
             return true;
-            // });
         },
 
         _correctText(text) {
@@ -770,18 +710,6 @@ export default {
                                 this.format('li-size', fontSize);
                             }
                         }
-                        // }
-                        // else {
-                        //     if (this.attributes.attributes.hasOwnProperty('li-color')) {
-                        //         super.format('li-color', null);
-                        //     }
-                        //     if (this.attributes.attributes.hasOwnProperty('li-font')) {
-                        //         super.format('li-font', null);
-                        //     }
-                        //     if (this.attributes.attributes.hasOwnProperty('li-size')) {
-                        //         super.format('li-size', null);
-                        //     }
-                        // }
                     }
                 }
                 Quill.register(ListItemStyle);
@@ -834,12 +762,6 @@ export default {
                         }
 
                         node.setAttribute('data-link', linkText);
-
-                        //linkExt / url
-                        //linkPage / id
-                        //linkSection / id
-                        //linkFile / url
-                        //linkClosePopup / true
 
                         return node;
                     }
@@ -1026,55 +948,15 @@ export default {
             await this.wwObjectCtrl.update(this.wwObject);
         },
 
-        /*
-        getSelection() {
-            let selection = null;
-            if (window.getSelection) {
-                try {
-                    var sel = window.getSelection && window.getSelection();
-                    if (sel && sel.rangeCount > 0) {
-                        selection = sel.getRangeAt(0);
-                    }
-                } catch (error) {
-                    console.log(error);
-                    return null;
-                }
-            }
-            return selection;
-        },
-        */
-        /*
-        updateSelection(event) {
-            if (document.activeElement == this.$el) {
-                this.textSelection = this.getSelection();
-            }
-        },
-        */
-        /*
-        reselect() {
-            let selection = window.getSelection();
-            selection.removeAllRanges();
-            if (this.textSelection) {
-                let textSelection = this.textSelection
-                selection.addRange(textSelection);
-            }
-        },
-        */
-
         wwTextBarAction(options, event) {
             const category = options.split(':')[0];
             const action = options.split(':').length > 1 ? options.split(':')[1] : null;
             const value = options.split(':').length > 2 ? options.split(':')[2] : null;
 
             this.$nextTick(function() {
-                //this.reselect();
-
                 console.log(category);
 
                 switch (category) {
-                    // case 'style':
-                    //     this.editStyle(action, value);
-                    //     break;
                     case 'link':
                         this.addLink();
                         break;
@@ -1114,16 +996,6 @@ export default {
                     case 'open':
                         this.openPopup(action);
                         break;
-
-                    // case 'insert':
-                    //     this.insert(action, value)
-                    //     break;
-                    // case 'clear':
-                    //     this.clear()
-                    //     break;
-                    // case 'reset':
-                    //     this.reset()
-                    //     break;
                     case 'html':
                         this.editHTML();
                         break;
@@ -1150,77 +1022,6 @@ export default {
                     return '';
             }
         },
-
-        /*=============================================m_ÔÔ_m=============================================\
-          TEXT BAR FUNCTIONS
-        \================================================================================================*/
-        /*
-        reset() {
-            this.$el.innerHTML = '';
-            wwLib.wwLang.setText(this.wwObject.content.data.text, '');
-        },
-        */
-        /*
-        clear() {
-            if (this.textSelection.toString().length !== 0) {
-                this.replaceSelectionWithHtml(window.getSelection().toString())
-            }
-            else {
-                this.$el.innerHTML = this.$el.innerText;
-            }
-        },
-        */
-        /*
-        insert(action, value) {
-            switch (action) {
-                case 'hr':
-                    switch (value) {
-                        case 'small':
-                            document.execCommand("insertHTML", false, '<hr width="25%">');
-                            break;
-                        case 'medium':
-                            document.execCommand("insertHTML", false, '<hr width="50%">');
-                            break;
-                        case 'big':
-                            document.execCommand("insertHTML", false, '<hr width="100%">');
-                            break;
-                    }
-                    break;
-            }
-        },
-        */
-        /*
-        editStyle(action, value) {
-
-            switch (action) {
-                case 'size':
-                    let sizes = {
-                        xsmall: 0.6,
-                        small: 1,
-                        medium: 1.5,
-                        big: 2,
-                        xbig: 3,
-                    }
-
-                    let size = sizes[value] || parseFloat(value);
-
-                    this.setStyle('font-size', size + 'rem');
-                    break;
-                case 'color':
-                    this.setColor(value);
-
-                    break;
-                case 'align':
-                    //this.setStyle('text-align', value);
-                    this.setAlign(value);
-                    break;
-                case 'font':
-                    this.setFont(value);
-                    break;
-            }
-
-        },
-        */
 
         checkSelection() {
             const selection = {
@@ -1387,150 +1188,6 @@ export default {
             });
         },
 
-        /*
-        removeTags(tag, style) {
-
-            let str = this.$el.innerHTML;
-
-            let startReg = new RegExp('<' + tag + (style ? ' style="' + style + '=' : '') + '[^\>]*>');
-            let startFalse = '<' + tag
-            let end = '</' + tag + '>'
-
-            let matches;
-            while (matches = startReg.exec(str)) {
-
-                let level = 0;
-
-                let startIndex = matches.index;
-                let startLength = matches[0].length;
-                let endIndex = -1;
-
-                for (let i = startIndex + startLength; i < str.length; i++) {
-                    if (str.substr(i).indexOf(startFalse) === 0) {
-                        level++;
-                        continue;
-                    }
-                    if (level != 0 && str.substr(i).indexOf(end) === 0) {
-                        level--;
-                        continue;
-                    }
-                    if (level == 0 && str.substr(i).indexOf(end) === 0) {
-                        endIndex = i;
-                        break;
-                    }
-                }
-
-                str = str.substr(0, startIndex) + str.substr(startIndex).replace(startReg, '')
-                str = str.substr(0, endIndex - startLength) + str.substr(endIndex - startLength).replace(end, '')
-            }
-
-            if (str) {
-                this.$el.innerHTML = str;
-            }
-
-        },
-        */
-        /*
-        removeStyles(style, root) {
-            root = root || this.$el;
-
-            if (!root.children || !root.children.length) {
-                return;
-            }
-            else {
-                for (let child of root.children) {
-                    child.style[style] = '';
-                    this.removeStyles(style, child);
-                }
-            }
-        },
-        */
-        /*
-        setStyle(style, value) {
-
-            if (!this.textSelection || this.textSelection.toString().length == 0) {
-                this.selectAll();
-            }
-
-            let html = this.getSelectionHtml();
-
-            const start = '<span style="' + style + ':' + value + '">';
-            const end = '</span>';
-
-            const reg = new RegExp('<span style="' + style + ':[^\"]*">(.*?)<\/span>');
-
-            let m;
-            while (m = reg.exec(html)) {
-                if (m && m[1]) {
-                    html = html.replace(m[0], m[1]);
-                }
-            }
-
-            html = start + html + end;
-
-            this.replaceSelectionWithHtml(html);
-        },
-        */
-        /*
-        setAlign(value) {
-            switch (value) {
-                case 'justify':
-                    document.execCommand('justifyFull', false, 'span');
-                    break;
-                case 'center':
-                    document.execCommand('justifyCenter', false, 'span');
-                    break;
-                case 'left':
-                    document.execCommand('justifyLeft', false, 'span');
-                    break;
-                case 'right':
-                    document.execCommand('justifyRight', false, 'span');
-                    break;
-            }
-        },
-        */
-        /*
-        setFont(value) {
-            if (!this.textSelection || this.textSelection.toString().length == 0) {
-                this.selectAll();
-            }
-            document.execCommand('fontName', false, value);
-        },
-        */
-
-        /*
-        async setColor(value) {
-
-
-            if (!this.textSelection || this.textSelection.toString().length == 0) {
-                this.selectAll();
-            }
-
-            switch (value) {
-                case 'more':
-
-                    let options = {
-                        firstPage: 'COLOR_PICKER'
-                    }
-
-                    try {
-                        const result = await wwLib.wwPopups.open(options)
-
-                        if (typeof (result.color)) {
-                            this.setColor(result.color)
-                        }
-                    } catch (error) {
-
-                    }
-
-                    break;
-                default:
-                    document.execCommand('foreColor', false, value);
-                    break;
-            }
-        },
-        */
-
         async addLink() {
             if (!this.quill.getSelection().length) {
                 return alert('Selectionnez du texte pour inserer un lien.');
@@ -1546,91 +1203,6 @@ export default {
 
             this.quill.format('ww-link-inline', JSON.stringify(result));
         },
-
-        /*
-        replaceSelectionWithHtml(html) {
-
-            let localrange;
-            if (window.getSelection && window.getSelection().getRangeAt) {
-                localrange = this.getSelection();
-                localrange.deleteContents();
-                const div = document.createElement("div");
-                div.innerHTML = html;
-                const frag = document.createDocumentFragment()
-                let child;
-                while ((child = div.firstChild)) {
-                    frag.appendChild(child);
-                }
-                localrange.insertNode(frag);
-            } else if (document.selection && document.selection.createRange) {
-                localrange = document.selection.createRange();
-                localrange.pasteHTML(html);
-            }
-
-        },
-        */
-        /*
-        getSelectionHtml() {
-            var html = "";
-            if (typeof window.getSelection != "undefined") {
-                var sel = window.getSelection();
-                if (sel.rangeCount) {
-                    var container = document.createElement("div");
-                    for (var i = 0, len = sel.rangeCount; i < len; ++i) {
-                        container.appendChild(sel.getRangeAt(i).cloneContents());
-                    }
-                    html = container.innerHTML;
-                }
-            } else if (typeof document.selection != "undefined") {
-                if (document.selection.type == "Text") {
-                    html = document.selection.createRange().htmlText;
-                }
-            }
-            return html;
-        },
-        */
-        /*
-        selectAll() {
-            var node = this.$el;
-
-            if (document.selection) {
-                var range = document.body.createTextRange();
-                range.moveToElementText(node);
-                range.select();
-            } else if (window.getSelection) {
-                var range = document.createRange();
-                range.selectNodeContents(node);
-                window.getSelection().removeAllRanges();
-                window.getSelection().addRange(range);
-            }
-
-            this.textSelection = this.getSelection();
-        },
-        */
-        /*
-        addWwObject() {
-            const newWwObject = wwLib.wwObject.getDefault({ type: 'ww-button' });
-
-            this.wwObject.content.data.children = this.wwObject.content.data.children || [];
-
-            //Find first empty index in current wwObject children
-            let index = 0;
-            while (this.wwObject.content.data.children[index]) {
-                index++;
-            }
-
-            this.wwObject.content.data.children[index] = newWwObject;
-
-            this.replaceSelectionWithHtml('[[wwObject=' + index + ']]');
-
-            let newText = this.getTextFromDom();
-
-            this.clearRender = true;
-
-            wwLib.wwLang.setText(this.wwObject.content.data.text, newText);
-            this.wwObjectCtrl.update(this.wwObject);
-        },
-        */
 
         async openPopup(popup) {
             const selection = this.quill.getSelection();
@@ -1757,27 +1329,12 @@ export default {
                     this.quill.enable();
                 }
 
-                // document.removeEventListener('selectionchange', this.updateSelection);
-                // document.addEventListener('selectionchange', this.updateSelection);
-
                 setTimeout(() => {
                     wwLib.wwObjectHover.removeLock();
                     wwLib.wwObjectHover.setMain(this.$parent);
                     wwLib.wwObjectHover.setLock(this.$parent);
-
-                    // if (this.$el.classList.contains('ww-text-content')) {
-                    //     this.$el.focus();
-                    // }
-                    // else if (this.$el.querySelector('.ww-text-content')) {
-                    //     this.$el.querySelector('.ww-text-content').focus();
-                    // }
-                    // else {
-
-                    // }
                 }, 50);
             } else if (oldFocus) {
-                // document.removeEventListener('selectionchange', this.updateSelection);
-
                 this.saveText();
 
                 if (this.quill) {
@@ -1838,27 +1395,9 @@ export default {
             // get text representation of clipboard
             let text = (e.originalEvent || e).clipboardData.getData('text/plain');
 
-            // text = this._correctText(text)
-
-            // var delta = this.quill.clipboard.convert(html);
-            // console.log(delta);
-
-            // // insert text manually
-            // this.quill.pasteHTML(html);
-
-            // this.quill.deleteText(this.quill.getSelection().index, this.quill.getSelection().length);
-
             setTimeout(() => {
-                // var tmp = document.createElement("DIV");
-                // tmp.innerHTML = text;
-                // text = tmp.innerHTML || tmp.innerHTML || "";
-
-                // console.log(text);
                 document.execCommand('insertHTML', false, text);
-                // this.quill.pasteHTML(text);
             }, 1);
-
-            // this.quill.clipboard.dangerouslyPasteHTML(0, text);
         });
 
         wwLib.$on('wwFocus', this.setFocus);
