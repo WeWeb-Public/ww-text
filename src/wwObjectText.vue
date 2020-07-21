@@ -1,35 +1,35 @@
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
 /* wwManager:start */
-import wwTextBar from "./wwTextBar.vue";
-import wwTextPopupHtml from "./wwTextPopupHtml.vue";
-import { setTimeout } from "timers";
-wwLib.wwPopups.addPopup("wwTextPopupHtml", wwTextPopupHtml);
-import Quill from "quill";
+import wwTextBar from './wwTextBar.vue';
+import wwTextPopupHtml from './wwTextPopupHtml.vue';
+import { setTimeout } from 'timers';
+wwLib.wwPopups.addPopup('wwTextPopupHtml', wwTextPopupHtml);
+import Quill from 'quill';
 
-wwLib.wwPopups.addStory("WWTEXT_LINKS", {
+wwLib.wwPopups.addStory('WWTEXT_LINKS', {
     title: {
-        en: "Link",
-        fr: "Lien",
+        en: 'Link',
+        fr: 'Lien'
     },
-    type: "wwPopupLinks",
+    type: 'wwPopupLinks',
     storyData: {
         links: [
-            "EXTERNAL",
-            "INTERNAL",
-            "SECTION",
+            'EXTERNAL',
+            'INTERNAL',
+            'SECTION',
             // 'POPUP',
-            "DOWNLOAD",
-            "CLOSE_POPUP",
+            'DOWNLOAD',
+            'CLOSE_POPUP'
             // 'NO_LINK'
-        ],
-    },
+        ]
+    }
 });
 /* wwManager:end */
 
 export default {
-    name: "__COMPONENT_NAME__",
+    name: '__COMPONENT_NAME__',
     components: {},
 
     render(createVNode) {
@@ -38,16 +38,16 @@ export default {
                 this.clearRender = false;
                 this.$forceUpdate();
             });
-            this.$el.innerHTML = "";
+            this.$el.innerHTML = '';
             return createVNode(
-                this.wwObject.content.data.tag || "div",
+                this.wwObject.content.data.tag || 'div',
                 {
                     class: {
-                        "ww-text": true,
+                        'ww-text': true
                     },
                     attrs: {
                         // contenteditable: this.editing
-                    },
+                    }
                 },
                 null
             );
@@ -59,11 +59,11 @@ export default {
                 for (const node of childNodes) {
                     let vNode = null;
 
-                    if (node.nodeName.toLowerCase() == "#comment") {
+                    if (node.nodeName.toLowerCase() == '#comment') {
                         //Do nothing.
-                    } else if (node.nodeName.toLowerCase() == "#text") {
+                    } else if (node.nodeName.toLowerCase() == '#text') {
                         vNode = self._v(node.textContent);
-                    } else if (node.nodeName.toLowerCase() == "ww-object") {
+                    } else if (node.nodeName.toLowerCase() == 'ww-object') {
                         let vn = createVNodes(node.childNodes);
 
                         let attributes = {};
@@ -75,13 +75,13 @@ export default {
                             attributes[key] = self.wwAttrs[key];
                         }
 
-                        attributes.wwInsideWwObject = "ww-text";
+                        attributes.wwInsideWwObject = 'ww-text';
 
                         let wwObjectData;
-                        if (self.wwObject.content.data.children && self.wwObject.content.data.children[node.attributes["data-ww-object-id"].nodeValue]) {
-                            wwObjectData = self.wwObject.content.data.children[node.attributes["data-ww-object-id"].nodeValue];
-                        } else if (self.wwObject.data.children && self.wwObject.data.children[node.attributes["data-ww-object-id"].nodeValue]) {
-                            wwObjectData = self.wwObject.data.children[node.attributes["data-ww-object-id"].nodeValue];
+                        if (self.wwObject.content.data.children && self.wwObject.content.data.children[node.attributes['data-ww-object-id'].nodeValue]) {
+                            wwObjectData = self.wwObject.content.data.children[node.attributes['data-ww-object-id'].nodeValue];
+                        } else if (self.wwObject.data.children && self.wwObject.data.children[node.attributes['data-ww-object-id'].nodeValue]) {
+                            wwObjectData = self.wwObject.data.children[node.attributes['data-ww-object-id'].nodeValue];
                         }
 
                         vNode = createVNode(
@@ -89,40 +89,40 @@ export default {
                             {
                                 props: {
                                     wwObject: wwObjectData,
-                                    inText: true,
+                                    inText: true
                                 },
-                                attrs: attributes,
+                                attrs: attributes
                             },
                             vn
                         );
-                    } else if (node.nodeName.toLowerCase() == "ww-link") {
+                    } else if (node.nodeName.toLowerCase() == 'ww-link') {
                         let vn = createVNodes(node.childNodes);
 
-                        const valueObject = JSON.parse(node.attributes["data-ww-link"].nodeValue);
+                        const valueObject = JSON.parse(node.attributes['data-ww-link'].nodeValue);
                         const linkType = Object.keys(valueObject)[0];
                         let linkData = {
-                            type: "none",
-                            data: {},
+                            type: 'none',
+                            data: {}
                         };
                         switch (linkType) {
-                            case "linkExt":
-                                linkData.type = "ww-link-ext";
+                            case 'linkExt':
+                                linkData.type = 'ww-link-ext';
                                 linkData.data.url = valueObject[linkType];
                                 break;
-                            case "linkPage":
-                                linkData.type = "ww-link-page";
+                            case 'linkPage':
+                                linkData.type = 'ww-link-page';
                                 linkData.data.id = valueObject[linkType];
                                 break;
-                            case "linkSection":
-                                linkData.type = "ww-link-section";
+                            case 'linkSection':
+                                linkData.type = 'ww-link-section';
                                 linkData.data.id = valueObject[linkType];
                                 break;
-                            case "linkFile":
-                                linkData.type = "ww-link-file";
+                            case 'linkFile':
+                                linkData.type = 'ww-link-file';
                                 linkData.data.url = valueObject[linkType];
                                 break;
-                            case "linkClosePopup":
-                                linkData.type = "ww-link-closepopup";
+                            case 'linkClosePopup':
+                                linkData.type = 'ww-link-closepopup';
                                 break;
                         }
 
@@ -133,13 +133,13 @@ export default {
                             {
                                 props: {
                                     wwLink: wwLink,
-                                    inText: true,
-                                },
+                                    inText: true
+                                }
                                 // attrs: attributes
                             },
                             vn
                         );
-                    } else if (node.nodeName.toLowerCase() == "script") {
+                    } else if (node.nodeName.toLowerCase() == 'script') {
                         continue;
                     } else {
                         let vn = createVNodes(node.childNodes);
@@ -152,12 +152,12 @@ export default {
                             }
                         }
 
-                        const nodeName = node.nodeName.toLowerCase() == "p" ? "div" : node.nodeName.toLowerCase();
+                        const nodeName = node.nodeName.toLowerCase() == 'p' ? 'div' : node.nodeName.toLowerCase();
 
                         vNode = createVNode(
                             nodeName,
                             {
-                                attrs: attributes,
+                                attrs: attributes
                             },
                             vn
                         );
@@ -176,48 +176,48 @@ export default {
             const wwObjRegex = /\[\[wwObject\s*=\s*([^\]]*)\]\]/gi;
             const wwLinkRegex = /\[\[wwLink\s*=\s*([^\|]*)\s*\|\s*text\s*=\s*([^\]]*)\]\]/gi;
 
-            let text = wwLib.wwLang.getText(this.wwObject.content.data.text).replace(wwObjRegex, '<ww-object data-ww-object-id="$1"></ww-object>') || "<br/>";
-            text = text.replace(wwLinkRegex, "<ww-link data-ww-link='$1'>$2</ww-link>") || "<br/>";
-            const contentText = document.createElement("div");
+            let text = wwLib.wwLang.getText(this.wwObject.content.data.text).replace(wwObjRegex, '<ww-object data-ww-object-id="$1"></ww-object>') || '<br/>';
+            text = text.replace(wwLinkRegex, "<ww-link data-ww-link='$1'>$2</ww-link>") || '<br/>';
+            const contentText = document.createElement('div');
             contentText.innerHTML = text;
             const childNodesText = contentText.childNodes;
             const nodesText = createVNodes(childNodesText);
-            const textClasses = ["ww-text-content"];
+            const textClasses = ['ww-text-content'];
             this.wwObject.content.data.fontStyle && textClasses.push(this.wwObject.content.data.fontStyle);
             const nodeText = createVNode(
-                "div",
+                'div',
                 {
                     class: textClasses,
                     attrs: {
-                        style: this.editingSection ? "display:none;" : "",
-                    },
+                        style: this.editingSection ? 'display:none;' : ''
+                    }
                 },
                 nodesText
             );
             nodes.push(nodeText);
 
             /* wwManager:start */
-            const quillClasses = ["ww-text-editor"];
+            const quillClasses = ['ww-text-editor'];
             this.wwObject.content.data.fontStyle && quillClasses.push(this.wwObject.content.data.fontStyle);
             const nodeQuill = createVNode(
-                "div",
+                'div',
                 {
                     class: quillClasses,
                     attrs: {
-                        style: this.editingSection ? "" : "display:none;",
-                    },
+                        style: this.editingSection ? '' : 'display:none;'
+                    }
                 },
                 null
             );
             nodes.push(nodeQuill);
             /* wwManager:end */
 
-            const classes = ["ww-text"];
+            const classes = ['ww-text'];
             //this.wwObject.content.data.fontStyle && classes.push(this.wwObject.content.data.fontStyle);
             const root = createVNode(
-                this.wwObject.content.data.tag || "div",
+                this.wwObject.content.data.tag || 'div',
                 {
-                    class: classes,
+                    class: classes
                 },
                 nodes
             );
@@ -230,8 +230,8 @@ export default {
         wwObjectCtrl: Object,
         wwAttrs: {
             type: Object,
-            default: {},
-        },
+            default: {}
+        }
     },
     data() {
         return {
@@ -241,7 +241,7 @@ export default {
             textBar: null,
             textSelection: null,
             focus: false,
-            clearRender: false,
+            clearRender: false
             /* wwManager:end */
         };
     },
@@ -250,11 +250,11 @@ export default {
             return this.wwObjectCtrl.get();
         },
         editing() {
-            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() == "CONTENT" && this.focus;
+            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() == 'CONTENT' && this.focus;
         },
         editingSection() {
-            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() == "CONTENT";
-        },
+            return this.wwObjectCtrl.getSectionCtrl() && this.wwObjectCtrl.getSectionCtrl().getEditMode() == 'CONTENT';
+        }
         // text() {
         //     console.log('CHANGED LANG');
         //     // <span class="ww-object-embed" data-ww-object-id="0"></span>
@@ -279,14 +279,14 @@ export default {
                     this.quill.disable();
                 });
             }
-        },
+        }
         /* wwManager:end */
     },
     methods: {
         async init() {
             /* wwManager:start */
-            this.$el.addEventListener("mousedown", this.preventNextClick);
-            this.$el.addEventListener("click", wwLib.wwObjectMenu.close);
+            this.$el.addEventListener('mousedown', this.preventNextClick);
+            this.$el.addEventListener('click', wwLib.wwObjectMenu.close);
 
             // await wwLib.wwUtils.addScriptToHead({
             //     link: 'https://cdn.quilljs.com/1.3.6/quill.js'
@@ -363,16 +363,16 @@ export default {
                     event.stopPropagation();
                 }
 
-                wwLib.getFrontWindow().removeEventListener("click", onClick, { capture: true });
-                wwLib.getManagerWindow().removeEventListener("click", onClick, { capture: true });
-                wwLib.getFrontWindow().removeEventListener("mousemove", onMouseMove);
-                wwLib.getManagerWindow().removeEventListener("mousemove", onMouseMove);
+                wwLib.getFrontWindow().removeEventListener('click', onClick, { capture: true });
+                wwLib.getManagerWindow().removeEventListener('click', onClick, { capture: true });
+                wwLib.getFrontWindow().removeEventListener('mousemove', onMouseMove);
+                wwLib.getManagerWindow().removeEventListener('mousemove', onMouseMove);
             }
 
-            wwLib.getFrontWindow().addEventListener("click", onClick, { capture: true });
-            wwLib.getManagerWindow().addEventListener("click", onClick, { capture: true });
-            wwLib.getFrontWindow().addEventListener("mousemove", onMouseMove);
-            wwLib.getManagerWindow().addEventListener("mousemove", onMouseMove);
+            wwLib.getFrontWindow().addEventListener('click', onClick, { capture: true });
+            wwLib.getManagerWindow().addEventListener('click', onClick, { capture: true });
+            wwLib.getFrontWindow().addEventListener('mousemove', onMouseMove);
+            wwLib.getManagerWindow().addEventListener('mousemove', onMouseMove);
         },
 
         correctText() {
@@ -388,7 +388,7 @@ export default {
                 let text = this.wwObject.content.data.text[lang];
 
                 this.wwObject.content.data.text[lang] = this._correctText(text);
-                this.wwObject.content.data._q = this.wwObject.content.data._q && typeof this.wwObject.content.data._q == "object" ? this.wwObject.content.data._q : {};
+                this.wwObject.content.data._q = this.wwObject.content.data._q && typeof this.wwObject.content.data._q == 'object' ? this.wwObject.content.data._q : {};
                 this.wwObject.content.data._q[lang] = true;
             }
 
@@ -403,8 +403,8 @@ export default {
             const wwObjRegex = /\[\[wwObject\s*=\s*([^\]]*)\]\]/gi;
             text = text.replace(wwObjRegex, '<span class="ww-object-embed" data-ww-object-id="$1"></span>');
 
-            const elem = document.createElement("div");
-            const elemP = document.createElement("p");
+            const elem = document.createElement('div');
+            const elemP = document.createElement('p');
             elem.append(elemP);
             elemP.innerHTML = text;
 
@@ -413,10 +413,10 @@ export default {
             function getFontSize(el) {
                 let size = el.style.fontSize;
                 if (size) {
-                    if (size.indexOf("rem") !== -1) {
-                        size = parseFloat(size.replace("rem", "")) * 16;
+                    if (size.indexOf('rem') !== -1) {
+                        size = parseFloat(size.replace('rem', '')) * 16;
                     } else {
-                        size = parseFloat(size.replace("px", ""));
+                        size = parseFloat(size.replace('px', ''));
                     }
 
                     let fontSizes = [];
@@ -424,7 +424,7 @@ export default {
                         fontSizes.push({
                             name: fontSize.name,
                             size: parseFloat(fontSize.screens.lg),
-                            className: fontSize.className,
+                            className: fontSize.className
                         });
                     }
 
@@ -436,7 +436,7 @@ export default {
                     return newSize;
                 }
 
-                return "";
+                return '';
             }
 
             function parseHtml(el) {
@@ -446,12 +446,12 @@ export default {
                     let subNewEl;
 
                     switch (subEl.tagName) {
-                        case "SPAN":
-                        case "DIV":
+                        case 'SPAN':
+                        case 'DIV':
                             subNewEl = document.createElement(subEl.tagName);
 
                             let align = subEl.style.textAlign;
-                            align = align != "inherit" ? align : null;
+                            align = align != 'inherit' ? align : null;
 
                             if (align) {
                                 subNewEl.style.textAlign = align;
@@ -462,31 +462,31 @@ export default {
                             subNewEl.innerHTML = subEl.innerHTML;
 
                             break;
-                        case "FONT":
-                            let style = "";
+                        case 'FONT':
+                            let style = '';
 
-                            if (subEl.attributes.color && subEl.attributes.color.nodeValue && subEl.attributes.color.nodeValue != "inherit") {
-                                style += "color:" + subEl.attributes.color.nodeValue + ";";
+                            if (subEl.attributes.color && subEl.attributes.color.nodeValue && subEl.attributes.color.nodeValue != 'inherit') {
+                                style += 'color:' + subEl.attributes.color.nodeValue + ';';
                             }
 
-                            if (subEl.attributes.face && subEl.attributes.face.nodeValue && subEl.attributes.face.nodeValue != "inherit") {
-                                style += "font-family:" + subEl.attributes.face.nodeValue + ";";
+                            if (subEl.attributes.face && subEl.attributes.face.nodeValue && subEl.attributes.face.nodeValue != 'inherit') {
+                                style += 'font-family:' + subEl.attributes.face.nodeValue + ';';
                             }
 
-                            subNewEl = document.createElement("span");
+                            subNewEl = document.createElement('span');
                             subNewEl.innerHTML = subEl.innerHTML;
-                            subNewEl.setAttribute("style", style);
+                            subNewEl.setAttribute('style', style);
                             let newFontSize2 = getFontSize(subEl);
                             newFontSize2 && subNewEl.classList.add(newFontSize2);
 
                             break;
 
-                        case "B":
-                            subNewEl = document.createElement("strong");
+                        case 'B':
+                            subNewEl = document.createElement('strong');
                             subNewEl.innerHTML = subEl.innerHTML;
                             break;
-                        case "I":
-                            subNewEl = document.createElement("em");
+                        case 'I':
+                            subNewEl = document.createElement('em');
                             subNewEl.innerHTML = subEl.innerHTML;
 
                             break;
@@ -511,11 +511,11 @@ export default {
         },
 
         loadQuill() {
-            this.quill = new Quill(this.$el.querySelector(".ww-text-editor"));
+            this.quill = new Quill(this.$el.querySelector('.ww-text-editor'));
             this.quill.disable();
             const wwObjRegex = /\[\[wwObject\s*=\s*([^\]]*)\]\]/gi;
             const wwLinkRegex = /\[\[wwLink\s*=\s*([^\|]*)\s*\|\s*text\s*=\s*([^\]]*)\]\]/gi;
-            let text = wwLib.wwLang.getText(this.wwObject.content.data.text).replace(wwObjRegex, '<span class="ww-object-embed" data-ww-object-id="$1"></span>') || "<br/>";
+            let text = wwLib.wwLang.getText(this.wwObject.content.data.text).replace(wwObjRegex, '<span class="ww-object-embed" data-ww-object-id="$1"></span>') || '<br/>';
             text = text.replace(wwLinkRegex, "<span class='ww-link-inline' data-ww-link='$1'>$2</span>");
             this.quill.pasteHTML(text);
         },
@@ -531,16 +531,16 @@ export default {
         },
 
         async loadQuillModules() {
-            if (!Quill.imports["formats/ww-object-embed"]) {
-                const Parchment = Quill.import("parchment");
-                const Embed = Quill.import("blots/embed");
-                const Block = Quill.import("blots/block");
-                const TextBlot = Quill.import("blots/text");
-                const Break = Quill.import("blots/break");
-                const Cursor = Quill.import("blots/cursor");
-                const Inline = Quill.import("blots/inline");
-                const Container = Quill.import("blots/container");
-                const Scroll = Quill.import("blots/scroll");
+            if (!Quill.imports['formats/ww-object-embed']) {
+                const Parchment = Quill.import('parchment');
+                const Embed = Quill.import('blots/embed');
+                const Block = Quill.import('blots/block');
+                const TextBlot = Quill.import('blots/text');
+                const Break = Quill.import('blots/break');
+                const Cursor = Quill.import('blots/cursor');
+                const Inline = Quill.import('blots/inline');
+                const Container = Quill.import('blots/container');
+                const Scroll = Quill.import('blots/scroll');
 
                 // WWOBJECT
                 function createWwObject(self, wwObjectIndex) {
@@ -551,7 +551,7 @@ export default {
                     } else if (wwObjectIndex && self.wwObject.data.children && self.wwObject.data.children[wwObjectIndex]) {
                         wwObjectData = self.wwObject.data.children[wwObjectIndex];
                     } else {
-                        wwObjectData = wwLib.wwObject.getDefault({ type: "ww-icon" });
+                        wwObjectData = wwLib.wwObject.getDefault({ type: 'ww-icon' });
 
                         self.wwObject.content.data.children = self.wwObject.content.data.children || [];
 
@@ -572,7 +572,9 @@ export default {
                         }
                     }
 
-                    const wwObject = new Vue.options.components.wwObject({ propsData: { wwObject: wwObjectData } });
+                    const wwObject = new Vue.options.components.wwObject({
+                        propsData: { wwObject: wwObjectData }
+                    });
                     wwObject.$parent = self;
                     self.$children.push(wwObject);
                     wwObject.$store = self.$store;
@@ -585,14 +587,14 @@ export default {
                 class WwObject extends Embed {
                     static create(value) {
                         const node = super.create(value);
-                        node.setAttribute("data-ww-object-id", value);
+                        node.setAttribute('data-ww-object-id', value);
 
                         return node;
                     }
 
                     static formats(node) {
                         return {
-                            wwObjectId: node.getAttribute("data-ww-object-id"),
+                            wwObjectId: node.getAttribute('data-ww-object-id')
                         };
                     }
 
@@ -600,13 +602,13 @@ export default {
                         super.attach();
                         const vueNode = this.getVueNode();
 
-                        this.domNode.innerHTML = "";
+                        this.domNode.innerHTML = '';
 
                         if (!vueNode) {
                             return;
                         } else {
-                            const { el, wwObjectId } = createWwObject(vueNode.__vue__, this.domNode.getAttribute("data-ww-object-id") || "");
-                            this.domNode.setAttribute("data-ww-object-id", wwObjectId);
+                            const { el, wwObjectId } = createWwObject(vueNode.__vue__, this.domNode.getAttribute('data-ww-object-id') || '');
+                            this.domNode.setAttribute('data-ww-object-id', wwObjectId);
                             this.domNode.appendChild(el);
                         }
                     }
@@ -625,12 +627,12 @@ export default {
 
                     // get value of the node (for implement undo function)
                     static value(node) {
-                        return node.getAttribute("data-ww-object-id") || "";
+                        return node.getAttribute('data-ww-object-id') || '';
                     }
                 }
-                WwObject.blotName = "ww-object-embed";
-                WwObject.tagName = "SPAN";
-                WwObject.className = "ww-object-embed";
+                WwObject.blotName = 'ww-object-embed';
+                WwObject.tagName = 'SPAN';
+                WwObject.className = 'ww-object-embed';
                 Quill.register(WwObject, true);
 
                 // LINE
@@ -643,42 +645,42 @@ export default {
                         }
                         const node = super.create(value);
 
-                        node.style.lineHeight = (value.height || 1) + "px";
-                        const line = document.createElement("div");
-                        line.style.width = value.width || "100%";
-                        line.style.display = "inline-block";
-                        line.style.borderTop = (value.height || 1) + "px solid";
-                        line.style.borderTopColor = value.color || "black";
-                        line.style.margin = "2px 0";
-                        line.classList.add("line");
+                        node.style.lineHeight = (value.height || 1) + 'px';
+                        const line = document.createElement('div');
+                        line.style.width = value.width || '100%';
+                        line.style.display = 'inline-block';
+                        line.style.borderTop = (value.height || 1) + 'px solid';
+                        line.style.borderTopColor = value.color || 'black';
+                        line.style.margin = '2px 0';
+                        line.classList.add('line');
 
-                        node.setAttribute("data-line", JSON.stringify(value));
+                        node.setAttribute('data-line', JSON.stringify(value));
 
                         node.appendChild(line);
                         return node;
                     }
 
                     format(name, value) {
-                        if (name == "color" && value) {
-                            this.domNode.querySelector(".line").style.borderTopColor = value;
-                            let _value = JSON.parse(this.domNode.getAttribute("data-line") || "{}");
+                        if (name == 'color' && value) {
+                            this.domNode.querySelector('.line').style.borderTopColor = value;
+                            let _value = JSON.parse(this.domNode.getAttribute('data-line') || '{}');
                             _value.color = value;
-                            this.domNode.setAttribute("data-line", JSON.stringify(_value));
+                            this.domNode.setAttribute('data-line', JSON.stringify(_value));
                         }
                     }
 
                     static formats(node) {
-                        return JSON.parse(node.getAttribute("data-line") || "{}");
+                        return JSON.parse(node.getAttribute('data-line') || '{}');
                     }
 
                     // get value of the node (for implement undo function)
                     static value(node) {
-                        return node.getAttribute("data-line") || "{}";
+                        return node.getAttribute('data-line') || '{}';
                     }
                 }
-                Line.blotName = "line";
-                Line.tagName = "SPAN";
-                Line.className = "line";
+                Line.blotName = 'line';
+                Line.tagName = 'SPAN';
+                Line.className = 'line';
                 Quill.register(Line, true);
 
                 // LIST ITEM COLOR
@@ -686,23 +688,23 @@ export default {
                     value(node) {
                         let value = super.value(node);
 
-                        if (!value.startsWith("rgb(")) return value;
+                        if (!value.startsWith('rgb(')) return value;
 
-                        value = value.replace(/^[^\d]+/, "").replace(/[^\d]+$/, "");
+                        value = value.replace(/^[^\d]+/, '').replace(/[^\d]+$/, '');
 
                         const color =
-                            "#" +
+                            '#' +
                             value
-                                .split(",")
+                                .split(',')
                                 .map(function(component) {
-                                    return ("00" + parseInt(component, 10).toString(16)).slice(-2);
+                                    return ('00' + parseInt(component, 10).toString(16)).slice(-2);
                                 })
-                                .join("");
+                                .join('');
                         return color;
                     }
                 }
-                const listItemColor = new ListItemColor("li-color", "color", {
-                    scope: Parchment.Scope.BLOCK,
+                const listItemColor = new ListItemColor('li-color', 'color', {
+                    scope: Parchment.Scope.BLOCK
                 });
                 Quill.register(listItemColor);
 
@@ -713,8 +715,8 @@ export default {
                         return value;
                     }
                 }
-                const listItemSize = new ListItemSize("li-size", "ww-font-size", {
-                    scope: Parchment.Scope.BLOCK,
+                const listItemSize = new ListItemSize('li-size', 'ww-font-size', {
+                    scope: Parchment.Scope.BLOCK
                 });
                 Quill.register(listItemSize);
 
@@ -725,25 +727,25 @@ export default {
                         return value;
                     }
                 }
-                const listItemFont = new ListItemFont("li-font", "font-family", {
-                    scope: Parchment.Scope.BLOCK,
+                const listItemFont = new ListItemFont('li-font', 'font-family', {
+                    scope: Parchment.Scope.BLOCK
                 });
                 Quill.register(listItemFont);
 
                 // STYLISED LIST ITEM
-                var ListItem = Quill.import("formats/list/item");
+                var ListItem = Quill.import('formats/list/item');
                 class ListItemStyle extends ListItem {
                     format(name, value) {
-                        if (name == "li-font") {
+                        if (name == 'li-font') {
                             this.domNode.style.fontFamily = value;
-                        } else if (name == "li-size") {
+                        } else if (name == 'li-size') {
                             for (let c of this.domNode.classList) {
-                                if (c.indexOf("ww-font-size-") === 0) {
+                                if (c.indexOf('ww-font-size-') === 0) {
                                     this.domNode.classList.remove(c);
                                 }
                             }
                             if (value) {
-                                this.domNode.classList.add("ww-font-size-" + value);
+                                this.domNode.classList.add('ww-font-size-' + value);
                             }
                         } else {
                             super.format(name, value);
@@ -759,18 +761,18 @@ export default {
 
                         if (attributes && attributes.attributes.color) {
                             const color = attributes.attributes.color.value(child.domNode);
-                            super.format("li-color", color);
+                            super.format('li-color', color);
                         }
 
                         if (attributes && attributes.attributes.font) {
                             const font = attributes.attributes.font.value(child.domNode);
-                            super.format("li-font", font);
+                            super.format('li-font', font);
                         }
 
                         if (attributes && attributes.attributes.fontSize) {
                             const fontSize = attributes.attributes.fontSize.value(child.domNode);
-                            if (!this.domNode.classList.contains("ww-font-size-" + fontSize)) {
-                                this.format("li-size", fontSize);
+                            if (!this.domNode.classList.contains('ww-font-size-' + fontSize)) {
+                                this.format('li-size', fontSize);
                             }
                         }
                         // }
@@ -794,49 +796,49 @@ export default {
                     static create(value) {
                         const node = super.create(value);
 
-                        if (typeof value == "object" && value.wwLink) {
+                        if (typeof value == 'object' && value.wwLink) {
                             value = value.wwLink;
                         }
 
-                        node.setAttribute("data-ww-link", value);
+                        node.setAttribute('data-ww-link', value);
 
                         const valueObject = JSON.parse(value);
                         const linkType = Object.keys(valueObject)[0];
-                        let linkText = "";
+                        let linkText = '';
                         switch (linkType) {
-                            case "linkExt":
+                            case 'linkExt':
                                 linkText = valueObject[linkType];
                                 break;
-                            case "linkPage":
+                            case 'linkPage':
                                 const pageId = valueObject[linkType];
-                                let pageName = "Unknown";
+                                let pageName = 'Unknown';
                                 for (const page of wwLib.wwWebsiteData.getPages()) {
                                     if (page.id == pageId) {
                                         pageName = page.name;
                                     }
                                 }
-                                linkText = "Page : " + pageName;
+                                linkText = 'Page : ' + pageName;
                                 break;
-                            case "linkSection":
+                            case 'linkSection':
                                 const sectionId = valueObject[linkType];
-                                let sectionName = "Unknown";
+                                let sectionName = 'Unknown';
                                 for (const _section of wwLib.wwWebsiteData.getCurrentPage().sections) {
-                                    const section = wwLib.$store.getters["websiteData/getSection"](_section.id);
+                                    const section = wwLib.$store.getters['websiteData/getSection'](_section.id);
                                     if (section.linkId == sectionId) {
                                         sectionName = section.sectionTitle;
                                     }
                                 }
-                                linkText = "Section : " + sectionName;
+                                linkText = 'Section : ' + sectionName;
                                 break;
-                            case "linkFile":
-                                linkText = "File : " + valueObject[linkType].split("/")[valueObject[linkType].split("/").length - 1];
+                            case 'linkFile':
+                                linkText = 'File : ' + valueObject[linkType].split('/')[valueObject[linkType].split('/').length - 1];
                                 break;
-                            case "linkClosePopup":
-                                linkText = "Close Popup";
+                            case 'linkClosePopup':
+                                linkText = 'Close Popup';
                                 break;
                         }
 
-                        node.setAttribute("data-link", linkText);
+                        node.setAttribute('data-link', linkText);
 
                         //linkExt / url
                         //linkPage / id
@@ -849,77 +851,77 @@ export default {
 
                     static formats(node) {
                         return {
-                            wwLink: node.getAttribute("data-ww-link"),
+                            wwLink: node.getAttribute('data-ww-link')
                         };
                     }
 
                     // get value of the node (for implement undo function)
                     static value(node) {
-                        return node.getAttribute("data-ww-link") || "";
+                        return node.getAttribute('data-ww-link') || '';
                     }
                 }
-                WwLink.blotName = "ww-link-inline";
-                WwLink.tagName = "SPAN";
-                WwLink.className = "ww-link-inline";
+                WwLink.blotName = 'ww-link-inline';
+                WwLink.tagName = 'SPAN';
+                WwLink.className = 'ww-link-inline';
                 WwLink.allowedChildren = [TextBlot, Inline, Break, Cursor];
                 Quill.register(WwLink, true);
 
                 // FONT SIZE
                 let configFontSize = { scope: Parchment.Scope.INLINE };
-                let fontSize = new Parchment.Attributor.Class("fontSize", "ww-font-size", configFontSize);
+                let fontSize = new Parchment.Attributor.Class('fontSize', 'ww-font-size', configFontSize);
                 Quill.register(fontSize, true);
 
                 // FONT
                 let configFont = { scope: Parchment.Scope.INLINE };
-                let font = new Parchment.Attributor.Style("font", "font-family", configFont);
+                let font = new Parchment.Attributor.Style('font', 'font-family', configFont);
                 Quill.register(font, true);
 
                 // ALIGN
                 let configAlign = { scope: Parchment.Scope.BLOCK };
-                let align = new Parchment.Attributor.Style("align", "text-align", configAlign);
+                let align = new Parchment.Attributor.Style('align', 'text-align', configAlign);
                 Quill.register(align, true);
 
                 // INDENT
                 let configIndent = { scope: Parchment.Scope.BLOCK };
-                let indent = new Parchment.Attributor.Style("indent", "padding-left", configIndent);
+                let indent = new Parchment.Attributor.Style('indent', 'padding-left', configIndent);
                 Quill.register(indent, true);
 
                 // LETTER SPACING
                 let configLetterSpacing = { scope: Parchment.Scope.INLINE };
-                let letterSpacing = new Parchment.Attributor.Style("letterSpacing", "letter-spacing", configLetterSpacing);
+                let letterSpacing = new Parchment.Attributor.Style('letterSpacing', 'letter-spacing', configLetterSpacing);
                 Quill.register(letterSpacing, true);
 
                 // LINE HEIGHT
                 let configLineHeight = { scope: Parchment.Scope.BLOCK };
-                let lineHeight = new Parchment.Attributor.Style("lineHeight", "line-height", configLineHeight);
+                let lineHeight = new Parchment.Attributor.Style('lineHeight', 'line-height', configLineHeight);
                 Quill.register(lineHeight, true);
 
                 // FONT WEIGHT
                 let configFontWeight = { scope: Parchment.Scope.INLINE };
-                let fontWeight = new Parchment.Attributor.Style("fontWeight", "font-weight", configFontWeight);
+                let fontWeight = new Parchment.Attributor.Style('fontWeight', 'font-weight', configFontWeight);
                 Quill.register(fontWeight, true);
 
                 // LIST TYPE
                 let configListType = { scope: Parchment.Scope.BLOCK };
-                let listType = new Parchment.Attributor.Attribute("listType", "type", configListType);
+                let listType = new Parchment.Attributor.Attribute('listType', 'type', configListType);
                 Quill.register(listType, true);
             }
         },
 
         getTextFromDom(format) {
             function _format(node, level) {
-                var indentBefore = new Array(level++ + 1).join("    "),
-                    indentAfter = new Array(level - 1).join("   "),
+                var indentBefore = new Array(level++ + 1).join('    '),
+                    indentAfter = new Array(level - 1).join('   '),
                     textNode;
 
                 for (var i = 0; i < node.children.length; i++) {
-                    textNode = document.createTextNode("\n" + indentBefore);
+                    textNode = document.createTextNode('\n' + indentBefore);
                     node.insertBefore(textNode, node.children[i]);
 
                     format(node.children[i], level);
 
                     if (node.lastElementChild == node.children[i]) {
-                        textNode = document.createTextNode("\n" + indentAfter);
+                        textNode = document.createTextNode('\n' + indentAfter);
                         node.appendChild(textNode);
                     }
                 }
@@ -934,7 +936,7 @@ export default {
 
                 const attrsToRemove = [];
                 for (const attr of newNode.attributes) {
-                    if (attr.name.indexOf("data-v-") === 0) {
+                    if (attr.name.indexOf('data-v-') === 0) {
                         attrsToRemove.push(attr.name);
                     } else if (!attr.value) {
                         attrsToRemove.push(attr.name);
@@ -949,29 +951,29 @@ export default {
                         continue;
                     }
 
-                    if (node.childNodes[i].nodeName.toLowerCase() == "#text") {
+                    if (node.childNodes[i].nodeName.toLowerCase() == '#text') {
                         newNode.append(node.childNodes[i].cloneNode(false));
-                    } else if (node.childNodes[i].classList && node.childNodes[i].classList.contains("ww-object-embed")) {
-                        newNode.append(document.createTextNode("[[wwObject=" + node.childNodes[i].attributes["data-ww-object-id"].nodeValue + "]]"));
-                    } else if (node.childNodes[i].classList && node.childNodes[i].classList.contains("ww-link-inline")) {
+                    } else if (node.childNodes[i].classList && node.childNodes[i].classList.contains('ww-object-embed')) {
+                        newNode.append(document.createTextNode('[[wwObject=' + node.childNodes[i].attributes['data-ww-object-id'].nodeValue + ']]'));
+                    } else if (node.childNodes[i].classList && node.childNodes[i].classList.contains('ww-link-inline')) {
                         // const text = node.childNodes[i].innerHTML;
                         // const text = getText(node.childNodes[i], newNode.childNodes[newNode.childNodes.length - 1], true);
-                        const txt = document.createElement("textarea");
+                        const txt = document.createElement('textarea');
                         txt.innerHTML = node.childNodes[i].innerHTML;
                         const text = txt.value;
-                        newNode.append(document.createTextNode("[[wwLink=" + node.childNodes[i].attributes["data-ww-link"].nodeValue + "|text=" + text + "]]"));
-                    } else if (node.childNodes[i].classList && node.childNodes[i].classList.contains("line")) {
+                        newNode.append(document.createTextNode('[[wwLink=' + node.childNodes[i].attributes['data-ww-link'].nodeValue + '|text=' + text + ']]'));
+                    } else if (node.childNodes[i].classList && node.childNodes[i].classList.contains('line')) {
                         try {
-                            const value = JSON.parse(node.childNodes[i].attributes["data-line"].nodeValue);
-                            const lineNode = document.createElement("span");
-                            lineNode.classList.add("line");
-                            lineNode.setAttribute("data-line", node.childNodes[i].attributes["data-line"].nodeValue);
+                            const value = JSON.parse(node.childNodes[i].attributes['data-line'].nodeValue);
+                            const lineNode = document.createElement('span');
+                            lineNode.classList.add('line');
+                            lineNode.setAttribute('data-line', node.childNodes[i].attributes['data-line'].nodeValue);
 
-                            lineNode.style.lineHeight = (value.height || 1) + "px";
-                            lineNode.style.width = value.width || "100%";
-                            lineNode.style.display = "inline-block";
-                            lineNode.style.borderTop = (value.height || 1) + "px solid " + (value.color || "black");
-                            lineNode.style.margin = "2px 0";
+                            lineNode.style.lineHeight = (value.height || 1) + 'px';
+                            lineNode.style.width = value.width || '100%';
+                            lineNode.style.display = 'inline-block';
+                            lineNode.style.borderTop = (value.height || 1) + 'px solid ' + (value.color || 'black');
+                            lineNode.style.margin = '2px 0';
 
                             newNode.append(lineNode);
                         } catch (error) {
@@ -992,13 +994,13 @@ export default {
                 }
             }
 
-            const newNode = document.createElement("div");
+            const newNode = document.createElement('div');
 
             let elem = this.$el;
-            if (this.$el.querySelector(".ql-editor")) {
-                elem = this.$el.querySelector(".ql-editor");
-            } else if (this.$el.querySelector(".ww-text-content")) {
-                elem = this.$el.querySelector(".ww-text-content");
+            if (this.$el.querySelector('.ql-editor')) {
+                elem = this.$el.querySelector('.ql-editor');
+            } else if (this.$el.querySelector('.ww-text-content')) {
+                elem = this.$el.querySelector('.ww-text-content');
             }
 
             let t = getText(elem.cloneNode(true), newNode);
@@ -1065,9 +1067,9 @@ export default {
         */
 
         wwTextBarAction(options, event) {
-            const category = options.split(":")[0];
-            const action = options.split(":").length > 1 ? options.split(":")[1] : null;
-            const value = options.split(":").length > 2 ? options.split(":")[2] : null;
+            const category = options.split(':')[0];
+            const action = options.split(':').length > 1 ? options.split(':')[1] : null;
+            const value = options.split(':').length > 2 ? options.split(':')[2] : null;
 
             this.$nextTick(function() {
                 //this.reselect();
@@ -1078,43 +1080,43 @@ export default {
                     // case 'style':
                     //     this.editStyle(action, value);
                     //     break;
-                    case "link":
+                    case 'link':
                         this.addLink();
                         break;
-                    case "insertWwObject":
+                    case 'insertWwObject':
                         this.insertWwObject();
                         break;
-                    case "exec":
+                    case 'exec':
                         this.exec(action, value);
                         break;
-                    case "list":
+                    case 'list':
                         this.setList(action);
                         break;
-                    case "indent":
+                    case 'indent':
                         this.setIndent(action);
                         break;
-                    case "fontSize":
+                    case 'fontSize':
                         this.setFontSize(action);
                         break;
-                    case "fontStyle":
+                    case 'fontStyle':
                         this.setFontStyle(action);
                         break;
-                    case "fontWeight":
+                    case 'fontWeight':
                         this.setFontWeight(action);
                         break;
-                    case "removeFormat":
+                    case 'removeFormat':
                         this.removeFormat();
                         break;
-                    case "format":
+                    case 'format':
                         this.copyFormat();
                         break;
-                    case "prop":
+                    case 'prop':
                         this.setProp(action, value);
                         break;
-                    case "color":
+                    case 'color':
                         this.setColor(action);
                         break;
-                    case "open":
+                    case 'open':
                         this.openPopup(action);
                         break;
 
@@ -1127,10 +1129,10 @@ export default {
                     // case 'reset':
                     //     this.reset()
                     //     break;
-                    case "html":
+                    case 'html':
                         this.editHTML();
                         break;
-                    case "openMenu":
+                    case 'openMenu':
                         this.openMenu(event);
                         break;
                     default:
@@ -1141,20 +1143,20 @@ export default {
 
         getHoverTag() {
             switch (this.wwObject.content.data.tag) {
-                case "h1":
-                    return "ww-text-hover-h1";
+                case 'h1':
+                    return 'ww-text-hover-h1';
                     break;
-                case "h2":
-                    return "ww-text-hover-h2";
+                case 'h2':
+                    return 'ww-text-hover-h2';
                     break;
-                case "h3":
-                    return "ww-text-hover-h3";
+                case 'h3':
+                    return 'ww-text-hover-h3';
                     break;
-                case "h4":
-                    return "ww-text-hover-h4";
+                case 'h4':
+                    return 'ww-text-hover-h4';
                     break;
                 default:
-                    return "";
+                    return '';
                     break;
             }
         },
@@ -1233,7 +1235,7 @@ export default {
         checkSelection() {
             const selection = {
                 index: this.quill.getSelection().index,
-                length: this.quill.getSelection().length,
+                length: this.quill.getSelection().length
             };
 
             if (!selection.length) {
@@ -1242,15 +1244,15 @@ export default {
         },
 
         async exec(cmd, value) {
-            if (typeof value === "undefined" || value === null) {
+            if (typeof value === 'undefined' || value === null) {
                 value = this.quill.getFormat()[cmd] ? false : true;
             }
 
             switch (cmd) {
-                case "color":
-                    if (value == "more") {
+                case 'color':
+                    if (value == 'more') {
                         let options = {
-                            firstPage: "COLOR_PICKER",
+                            firstPage: 'COLOR_PICKER'
                         };
 
                         try {
@@ -1272,32 +1274,32 @@ export default {
         },
 
         setList(value) {
-            let currentFormat = this.quill.getFormat()["list"];
+            let currentFormat = this.quill.getFormat()['list'];
 
             if (currentFormat == value) {
-                this.exec("list", null);
+                this.exec('list', null);
             } else {
-                this.exec("list", value);
+                this.exec('list', value);
             }
         },
 
         setIndent(direction) {
-            let currentFormat = this.quill.getFormat()["indent"];
+            let currentFormat = this.quill.getFormat()['indent'];
 
             let newValue = 0;
 
             if (currentFormat) {
-                newValue = parseInt(currentFormat.replace("px", ""));
+                newValue = parseInt(currentFormat.replace('px', ''));
             }
 
-            if (direction == "left") {
+            if (direction == 'left') {
                 newValue += 50;
             } else {
                 newValue -= 50;
             }
 
             newValue = Math.max(newValue, 0);
-            this.exec("indent", newValue ? newValue + "px" : false);
+            this.exec('indent', newValue ? newValue + 'px' : false);
         },
 
         setProp(prop, value) {
@@ -1319,17 +1321,17 @@ export default {
 
         setFontSize(value) {
             this.checkSelection();
-            this.quill.format("fontSize", value);
+            this.quill.format('fontSize', value);
         },
 
         setFontWeight(value) {
             this.checkSelection();
             if (parseInt(value) == 700) {
-                this.quill.format("fontWeight", null);
-                this.quill.format("bold", true);
+                this.quill.format('fontWeight', null);
+                this.quill.format('bold', true);
             } else {
-                this.quill.format("bold", false);
-                this.quill.format("fontWeight", value);
+                this.quill.format('bold', false);
+                this.quill.format('fontWeight', value);
             }
         },
 
@@ -1342,7 +1344,7 @@ export default {
             let copiedFormat = null;
 
             try {
-                copiedFormat = localStorage.getItem("ww-text-copied-format");
+                copiedFormat = localStorage.getItem('ww-text-copied-format');
                 copiedFormat = JSON.parse(copiedFormat);
             } catch (error) {}
 
@@ -1353,15 +1355,15 @@ export default {
                     this.quill.format(key, copiedFormat[key]);
                 }
 
-                localStorage.removeItem("ww-text-copied-format");
+                localStorage.removeItem('ww-text-copied-format');
             } else {
-                localStorage.setItem("ww-text-copied-format", JSON.stringify(this.quill.getFormat()));
+                localStorage.setItem('ww-text-copied-format', JSON.stringify(this.quill.getFormat()));
             }
         },
 
         insertWwObject() {
             const cursorPosition = this.quill.getSelection().index;
-            this.quill.insertEmbed(cursorPosition, "ww-object-embed", "");
+            this.quill.insertEmbed(cursorPosition, 'ww-object-embed', '');
             this.quill.setSelection(cursorPosition + 1);
 
             this.$nextTick(this.saveText);
@@ -1369,13 +1371,13 @@ export default {
 
         insertLine(value) {
             const cursorPosition = this.quill.getSelection().index;
-            this.quill.insertEmbed(cursorPosition, "line", JSON.stringify(value));
+            this.quill.insertEmbed(cursorPosition, 'line', JSON.stringify(value));
             this.quill.setSelection(cursorPosition + 1);
         },
 
         setColor(value) {
             this.checkSelection();
-            this.quill.format("color", value);
+            this.quill.format('color', value);
         },
 
         setFontStyle(value) {
@@ -1541,18 +1543,18 @@ export default {
 
         async addLink() {
             if (!this.quill.getSelection().length) {
-                return alert("Selectionnez du texte pour inserer un lien.");
+                return alert('Selectionnez du texte pour inserer un lien.');
             }
 
             let result = await wwLib.wwPopups.open({
-                firstPage: "WWTEXT_LINKS",
+                firstPage: 'WWTEXT_LINKS'
             });
 
             if (!result) {
                 return;
             }
 
-            this.quill.format("ww-link-inline", JSON.stringify(result));
+            this.quill.format('ww-link-inline', JSON.stringify(result));
         },
 
         /*
@@ -1646,8 +1648,8 @@ export default {
             let options = {
                 firstPage: popup,
                 data: {
-                    fontStyle: this.quill.getFormat(selection && selection.index ? selection.index : 0, 1),
-                },
+                    fontStyle: this.quill.getFormat(selection && selection.index ? selection.index : 0, 1)
+                }
             };
 
             try {
@@ -1669,31 +1671,31 @@ export default {
         async editHTML() {
             wwLib.wwObjectHover.setLock(this);
 
-            wwLib.wwPopups.addStory("WWTEXT_HTML", {
+            wwLib.wwPopups.addStory('WWTEXT_HTML', {
                 title: {
-                    en: "Edit HTML",
-                    fr: "Editer le HTML",
+                    en: 'Edit HTML',
+                    fr: 'Editer le HTML'
                 },
-                type: "wwTextPopupHtml",
+                type: 'wwTextPopupHtml',
                 buttons: null,
                 storyData: {},
                 buttons: {
                     NEXT: {
                         text: {
-                            en: "Ok",
-                            fr: "Ok",
+                            en: 'Ok',
+                            fr: 'Ok'
                         },
-                        next: false,
-                    },
-                },
+                        next: false
+                    }
+                }
             });
 
             let options = {
-                firstPage: "WWTEXT_HTML",
+                firstPage: 'WWTEXT_HTML',
                 data: {
                     wwObject: this.wwObject,
-                    html: this.getTextFromDom(),
-                },
+                    html: this.getTextFromDom()
+                }
             };
 
             try {
@@ -1722,23 +1724,23 @@ export default {
         async edit() {
             wwLib.wwObjectHover.setLock(this);
 
-            wwLib.wwPopups.addStory("WWTEXT_EDIT", {
+            wwLib.wwPopups.addStory('WWTEXT_EDIT', {
                 title: {
-                    en: "Edit Text",
-                    fr: "Editer le texte",
+                    en: 'Edit Text',
+                    fr: 'Editer le texte'
                 },
-                type: "wwPopupEditWwObject",
+                type: 'wwPopupEditWwObject',
                 buttons: null,
                 storyData: {
-                    list: {},
-                },
+                    list: {}
+                }
             });
 
             let options = {
-                firstPage: "WWTEXT_EDIT",
+                firstPage: 'WWTEXT_EDIT',
                 data: {
-                    wwObject: this.wwObject,
-                },
+                    wwObject: this.wwObject
+                }
             };
 
             try {
@@ -1807,7 +1809,7 @@ export default {
             this.clearRender = true;
             this.quill = null;
             this.$forceUpdate();
-        },
+        }
 
         /* wwManager:end */
     },
@@ -1832,20 +1834,20 @@ export default {
     mounted() {
         this.init();
 
-        this.$emit("ww-loaded", this);
+        this.$emit('ww-loaded', this);
 
         /* wwManager:start */
         this.textBar = {
             context: this,
-            type: "wwTextBar",
-            component: wwTextBar,
+            type: 'wwTextBar',
+            component: wwTextBar
         };
 
-        this.$el.addEventListener("paste", (e) => {
+        this.$el.addEventListener('paste', e => {
             e.preventDefault();
 
             // get text representation of clipboard
-            let text = (e.originalEvent || e).clipboardData.getData("text/plain");
+            let text = (e.originalEvent || e).clipboardData.getData('text/plain');
 
             // text = this._correctText(text)
 
@@ -1863,21 +1865,21 @@ export default {
                 // text = tmp.innerHTML || tmp.innerHTML || "";
 
                 // console.log(text);
-                document.execCommand("insertHTML", false, text);
+                document.execCommand('insertHTML', false, text);
                 // this.quill.pasteHTML(text);
             }, 1);
 
             // this.quill.clipboard.dangerouslyPasteHTML(0, text);
         });
 
-        wwLib.$on("wwFocus", this.setFocus);
+        wwLib.$on('wwFocus', this.setFocus);
 
         wwLib.wwAsyncScripts.loadAsset({
-            target: "manager",
-            name: "ww-text",
+            target: 'manager',
+            name: 'ww-text'
         });
 
-        wwLib.$on("wwLang:changed", (lang) => {
+        wwLib.$on('wwLang:changed', lang => {
             this.saveText({ lang: lang.old });
 
             this.clearRender = true;
@@ -1894,11 +1896,11 @@ export default {
     beforeDestroy() {
         /* wwManager:start */
         this.saveText();
-        wwLib.$off("wwFocus", this.setFocus);
+        wwLib.$off('wwFocus', this.setFocus);
 
         wwLib.wwObjectEditors.close(this.textBar);
         /* wwManager:end */
-    },
+    }
 };
 </script>
 
@@ -1967,7 +1969,7 @@ h4 {
         position: relative;
 
         &:before {
-            content: "";
+            content: '';
             position: absolute;
             border: 1px dashed #2e86c2;
             top: -2px;
@@ -2018,7 +2020,7 @@ h4 {
 \================================================================================================*/
 .ww-text-hover-h1 {
     &::after {
-        content: "h1";
+        content: 'h1';
         position: absolute;
         right: 0;
         bottom: 0;
@@ -2032,7 +2034,7 @@ h4 {
 }
 .ww-text-hover-h2 {
     &::after {
-        content: "h2";
+        content: 'h2';
         position: absolute;
         right: 0;
         bottom: 0;
@@ -2046,7 +2048,7 @@ h4 {
 }
 .ww-text-hover-h3 {
     &::after {
-        content: "h3";
+        content: 'h3';
         position: absolute;
         right: 0;
         bottom: 0;
@@ -2060,7 +2062,7 @@ h4 {
 }
 .ww-text-hover-h4 {
     &::after {
-        content: "h4";
+        content: 'h4';
         position: absolute;
         right: 0;
         bottom: 0;
