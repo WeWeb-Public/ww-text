@@ -1358,7 +1358,8 @@ export default {
         },
 
         async connectCms() {
-            this.wwObjectCtrl.globalEdit({ connect: true });
+            const { attribute, value } = await this.wwObjectCtrl.editCmsBindings();
+            if (attribute === 'text') await this.replaceText(value);
         }
 
         /* wwManager:end */
