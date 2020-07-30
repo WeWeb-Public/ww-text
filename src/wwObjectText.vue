@@ -1752,7 +1752,8 @@ export default {
             wwLib.wwObjectHover.removeLock();
         },
 
-        setFocus(focusId) {
+        setFocus(focusData) {
+            const focusId = focusData._uid;
             const oldFocus = this.focus;
             this.focus = focusId == this.$parent._uid;
 
