@@ -285,6 +285,12 @@ export default {
                 }
                 wwLib.wwObjectEditors.close(this.textBar);
             }
+        },
+        'wwObject.content.data.text'(newVal, oldVal) {
+            const locale = Object.keys(newVal)[0];
+            if (oldVal !== undefined && newVal[locale] !== oldVal[locale]) {
+                this.replaceText(this.wwObject.content.data.text[locale]);
+            }
         }
         /* wwManager:end */
     },
@@ -1384,8 +1390,7 @@ export default {
         },
 
         async connectCms() {
-            const { attribute, value } = await this.wwObjectCtrl.editCmsBindings();
-            if (attribute === 'text') await this.replaceText(value);
+            await this.wwObjectCtrl.editCmsBindings();
         }
 
         /* wwManager:end */
